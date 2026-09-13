@@ -19,15 +19,19 @@ Inputs: the file path, `.refactor/inventory.md`, `.refactor/inventory.json`.
    the index; `Read` with offset/limit only for decls whose role is unclear.
 3. If `deadcode` is installed: `deadcode ./...` and list unreachable decls in the file
    under "Delete first".
-4. Group **each type with all its methods**. Then cluster by responsibility (see the
+4. If one cluster dominates, compute fan-in from `inventory.json` (count how often each
+   decl appears in others' `refs`), plan Wave 0 = top hubs + package-level state into
+   `<base>_core.go`, then treat the remaining decls minus hubs as the graph to cluster.
+   Never hand-cut a large cluster by line ranges.
+5. Group **each type with all its methods**. Then cluster by responsibility (see the
    skill's `references/playbook.md`). Target files of 150–400 code lines, cap 500,
    named `<base>_<responsibility>.go`.
-5. Package-level `var`/`const` groups with initializers and every `init()` get ONE
+6. Package-level `var`/`const` groups with initializers and every `init()` get ONE
    owning file (usually the original). Note initialization-order implications.
-6. Waves: clusters in a wave share no decls and no reference edges between them.
+7. Waves: clusters in a wave share no decls and no reference edges between them.
    Wave 1 = leaves and types; later waves = dependents. In Go, references across files
    are free, so waves matter for merge simplicity, not correctness.
-7. Sub-package candidates (only listed, never assumed): clusters whose members reference
+8. Sub-package candidates (only listed, never assumed): clusters whose members reference
    nothing unexported outside the cluster and whose exported surface is small. For each,
    list the unexported names that would need exporting.
 

@@ -22,6 +22,14 @@ sub-package only afterwards, and only for clusters with a clean exported surface
 6. **Tests**: `_test.go` files that test moved decls stay valid (same package). If a
    test file is itself over budget, split it the same way.
 
+## One giant cluster (hubs)
+If `inventory` reports one cluster containing most decls, a few hub decls (a config struct,
+a logger, an error type, a base interface) glue everything together. Sort the JSON
+`symbols` by how many other decls reference them (the planner can do this from
+`inventory.json` in a few lines), move the top hubs into `<base>_core.go` as Wave 0,
+and re-run `inventory` on the remaining file: the clusters will separate. Never cut a
+large cluster by hand along line numbers.
+
 ## Sub-package extraction (only when justified)
 Signals it is justified: the cluster is used by other packages already, or has a stable
 exported API, and references nothing unexported in the parent. Procedure: movedecl to
