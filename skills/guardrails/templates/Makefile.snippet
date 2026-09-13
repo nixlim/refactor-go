@@ -1,0 +1,7 @@
+## Guardrails (append to Makefile)
+.PHONY: guardrails
+guardrails:
+	test -z "$$(gofmt -l $$(git ls-files '*.go'))"
+	go vet ./...
+	bash scripts/check_file_length.sh --baseline .refactor-baseline.tsv .
+	golangci-lint run ./...

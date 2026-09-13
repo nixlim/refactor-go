@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "bash \"${CLAUDE_PLUGIN_ROOT}\"/skills/split-file/scripts/check_file_length.sh --hook", "timeout": 15 }
+        ]
+      }
+    ]
+  }
+}

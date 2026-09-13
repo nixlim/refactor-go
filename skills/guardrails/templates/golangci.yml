@@ -1,0 +1,25 @@
+# Merge into .golangci.yml (golangci-lint v2 schema). Thresholds are deliberate.
+version: "2"
+linters:
+  enable: [funlen, gocyclo, gocognit, nestif, maintidx, depguard, unused, govet, errcheck, staticcheck]
+  settings:
+    funlen: { lines: 60, statements: 40 }
+    gocyclo: { min-complexity: 15 }
+    gocognit: { min-complexity: 20 }
+    nestif: { min-complexity: 5 }
+    depguard:
+      rules:
+        # Example boundary: domain must not import infrastructure or transport.
+        domain:
+          files: ["**/internal/domain/**"]
+          deny:
+            - pkg: "example.com/app/internal/infra"
+              desc: "domain must not depend on infra"
+            - pkg: "example.com/app/internal/api"
+              desc: "domain must not depend on transport"
+issues:
+  # Uncomment to enforce only on new code while paying down existing debt:
+  # new-from-rev: <baseline commit sha>
+  exclude-rules:
+    - path: _test\.go
+      linters: [funlen, gocognit]

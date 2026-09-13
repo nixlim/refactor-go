@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "refactor-go",
+  "displayName": "Refactor Go (split god-files safely)",
+  "version": "1.0.0",
+  "description": "Deterministic, compiler-gated decomposition of oversized Go files into same-package files and, when warranted, sub-packages; parallel subagents in git worktrees; file-size and boundary guardrails.",
+  "keywords": ["refactoring", "go", "golang", "gopls", "worktree", "subagents", "guardrails"],
+  "license": "MIT"
+}

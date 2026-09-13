@@ -1,0 +1,15 @@
+## File & package size (enforced by tooling; see scripts/check_file_length.sh, .golangci.yml)
+
+- No Go file over 500 code lines. If an edit would push a file over budget, STOP and split
+  it first with `/refactor-go:split-file <file>` (same-package split; no import changes),
+  then make the change.
+- Files in `.refactor-baseline.tsv` are grandfathered: they may shrink, never grow.
+- Functions: funlen 60 lines / 40 statements, gocyclo 15, gocognit 20, nestif 5.
+- Package boundaries are `depguard` rules; a new import that violates one is a design
+  decision, not a fix. Never add an interface, callback, or `common` package to dodge an
+  import cycle; raise it instead.
+- Every `init()` and initialized package-level `var` has one owning file; do not duplicate
+  state under a new name.
+- Before finishing any task run: `gofmt -l . && go vet ./... && bash scripts/check_file_length.sh . && golangci-lint run ./...`
+  A failure is a blocker, not a warning.
+- Refactor-only commits are prefixed `refactor(<pkg>):` and contain no behavior changes.

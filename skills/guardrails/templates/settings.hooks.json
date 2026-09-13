@@ -1,0 +1,9 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      { "matcher": "Edit|Write|MultiEdit",
+        "hooks": [ { "type": "command", "command": "bash scripts/check_file_length.sh --hook", "timeout": 15 } ] }
+    ]
+  },
+  "worktree": { "baseRef": "head" }
+}

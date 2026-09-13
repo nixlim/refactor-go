@@ -1,0 +1,27 @@
+# Merge into .pre-commit-config.yaml
+repos:
+  - repo: local
+    hooks:
+      - id: gofmt
+        name: gofmt
+        entry: bash -c 'test -z "$(gofmt -l "$@")"' --
+        language: system
+        types: [go]
+      - id: go-vet
+        name: go vet
+        entry: go vet ./...
+        language: system
+        pass_filenames: false
+        types: [go]
+      - id: max-file-length
+        name: go file size budget (code lines)
+        entry: bash scripts/check_file_length.sh --baseline .refactor-baseline.tsv
+        language: system
+        types: [go]
+        pass_filenames: true
+      - id: golangci-lint
+        name: golangci-lint
+        entry: golangci-lint run ./...
+        language: system
+        pass_filenames: false
+        types: [go]
